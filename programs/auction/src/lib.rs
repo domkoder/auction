@@ -1,12 +1,4 @@
-
-
-use anchor_lang::{prelude::*,
-    solana_program::{
-        clock::UnixTimestamp,
-        program::invoke,
-        system_instruction
-    }
-};
+use anchor_lang::prelude::*;
 use crate::instructions::*;
 
 pub mod errors;
@@ -19,8 +11,11 @@ declare_id!("DH5eappnLSkqwVRee1SKoiwRr3tk5GfjtqfdsKBzqP6j");
 pub mod auction {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        Ok(())
+    pub fn initialize(ctx: Context<InitializeAuction>,
+        duration: i64,
+        starting_price: u64,
+        item: String) -> Result<()> {
+        initialize_auction(ctx, duration, starting_price, item)
     }
 }
 
