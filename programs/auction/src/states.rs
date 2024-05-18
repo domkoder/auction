@@ -2,9 +2,9 @@ use anchor_lang::{prelude::*, solana_program::clock::UnixTimestamp};
 use std::mem::size_of;
 
 #[constant]
-pub const AUCTION_SEED: &[u8] = b"auction";
+pub const AUCTION_SEED: &str = "auction";
 #[constant]
-pub const BID_SEED: &[u8] = b"bid";
+pub const BID_SEED: &str = "bid";
 
 #[account]
 pub struct Auction {
@@ -34,13 +34,14 @@ impl Auction {
 
 #[account]
 pub struct Bid {
-    pub authority: Pubkey,
+    pub auction: Pubkey,
+    pub bidder: Pubkey,
     pub amount: u64,
     pub bump: u8,
 }
 
 impl Bid {
     pub fn size() -> usize {
-        size_of::<Pubkey>() + size_of::<u64>() + size_of::<u8>()
+        size_of::<Pubkey>()+size_of::<Pubkey>() + size_of::<u64>() + size_of::<u8>()
     }
 }

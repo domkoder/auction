@@ -17,6 +17,10 @@ pub mod auction {
         item: String) -> Result<()> {
         initialize_auction(ctx, duration, starting_price, item)
     }
+
+    pub fn bid(ctx: Context<PlaceBid>, amount: u64) -> Result<()> {
+        place_bid(ctx, amount)
+    }
 }
 
 #[derive(Accounts)]

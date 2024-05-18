@@ -47,7 +47,7 @@ pub struct InitializeAuction<'info> {
         payer = auction_authority,
         space = 8 + Auction::size(),
         seeds = [
-            AUCTION_SEED,
+            AUCTION_SEED.as_bytes(),
             auction_authority.key().as_ref(),
         ],
         bump
