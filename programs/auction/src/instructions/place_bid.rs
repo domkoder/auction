@@ -20,18 +20,9 @@ pub fn place_bid(ctx: Context<PlaceBid>, amount: u64) -> Result<()> {
         return err!(AuctionError::Closed);
     }
 
-    // Check if the bid is lower or equal to the current highest
-    // require!(amount > auction.leading_bid, AuctionError::BidTooLow);
-
     if amount <= auction.leading_bid {
         return err!(AuctionError::BidTooLow);
     }
-
-    // Don't allow increasing the bid for the highest bidder
-    // require!(
-    //     *bidder.key != auction.leading_bidder,
-    //     AuctionError::AlreadyHighestBidder
-    // );
 
     if *bidder.key == auction.leading_bidder {
         return err!(AuctionError::AlreadyHighestBidder);
