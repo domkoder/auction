@@ -7,6 +7,7 @@ use crate::states::*;
 
 pub fn end_auction(ctx: Context<EndAuction>) -> Result<()> {
   let auction = &mut ctx.accounts.auction;
+  let auctioneer = &mut ctx.accounts.auctioneer;
 
     // Ensure the auction is not already closed
     if !auction.is_open {
@@ -15,7 +16,7 @@ pub fn end_auction(ctx: Context<EndAuction>) -> Result<()> {
 
   // Is the auction already closed?
   if Clock::get()?.unix_timestamp < auction.end_time {
-      return Err(error!(Errors::Open));
+      return Err(error!(AuctionError::Open));
   }
 
   // Ensure the leading bid is valid
@@ -24,8 +25,8 @@ pub fn end_auction(ctx: Context<EndAuction>) -> Result<()> {
   }
 
   // Transfer lamports to the seller
-  **ctx.accounts.auction.try_borrow_mut_lamports()? -= auction.leading_bid;
-  **ctx.accounts.auctioneer.try_borrow_mut_lamports()? += auction.leading_bid;
+  **auction.to_account_info().try_borrow_mut_lamports()? -= auction.leading_bid;
+  **auctioneer.to_account_info().try_borrow_mut_lamports()? += auction.leading_bid;
 
   auction.is_open = false;
 
@@ -46,5 +47,5 @@ pub struct EndAuction<'info> {
     bump = auction.bump,
     has_one = auctioneer,
   )]
-  pub auction: Account<'info, auction>,
+  pub auction: Account<'info, Auction>,
 }

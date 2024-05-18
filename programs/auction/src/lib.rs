@@ -3,6 +3,7 @@ use crate::instructions::*;
 
 pub mod errors;
 pub mod states;
+
 pub mod instructions;
 
 declare_id!("DH5eappnLSkqwVRee1SKoiwRr3tk5GfjtqfdsKBzqP6j");
@@ -20,6 +21,10 @@ pub mod auction {
 
     pub fn bid(ctx: Context<PlaceBid>, amount: u64) -> Result<()> {
         place_bid(ctx, amount)
+    }
+
+    pub fn end(ctx: Context<EndAuction>) -> Result<()> {
+        end_auction(ctx)
     }
 }
 
